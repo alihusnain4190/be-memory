@@ -1,0 +1,1 @@
+exports.familyImage = require("./familyImage");
