@@ -3,6 +3,7 @@ process.env.NODE_ENV = "test";
 const app = require("../app");
 const request = require("supertest");
 const connection = require("../db/connection");
+const { as } = require("../db/connection");
 
 beforeEach(() => {
   return connection.seed.run();
@@ -14,6 +15,10 @@ afterAll(() => {
 describe("/", () => {
   describe("/api", () => {
     describe("/api/f_imgs", () => {
+      it("status 404 Route not found", async () => {
+        const { body } = await request(app).get("/api/ali").expect(404);
+        expect(body.msg).toBe("Route Not Found");
+      });
       it("status 200 with response of all faimily images and data in array", () => {
         return request(app)
           .get("/api/f_imgs")
@@ -61,18 +66,22 @@ describe("/", () => {
 
         expect(f_img).toBeSorted({ descending: true });
       });
-      it.only("GET status:400, when passed an invalid sort_by query", async () => {
+      it("GET status:400, when passed an invalid sort_by query", async () => {
         const { body } = await request(app)
           .get("/api/f_imgs?order=ali")
           .expect(400);
-          console.log(body);
-         expect(body.msg).toBe("Bad Request");
+        expect(body.msg).toBe("Bad Request: Invalid order query");
       });
       it("GET status:400, when passed an invalid sort_by query", async () => {
         const { body } = await request(app)
           .get("/api/f_imgs?sort_by=ali")
           .expect(400);
         expect(body.msg).toBe("Bad Request");
+      });
+      it("Invalid method with status 405", async () => {
+        const { body } = await request(app).put("/api/f_imgs").expect(405);
+        console.log(body);
+        expect(body.msg).toBe("Method Not Allowed");
       });
     });
   });
