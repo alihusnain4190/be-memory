@@ -14,9 +14,10 @@ exports.methodNotAllowed = (req, res) => {
   res.status(405).send({ msg: "Method Not Allowed" });
 };
 exports.handleErrorSQL = (err, req, res, next) => {
-  const sqlError = ["42703"];
+  const sqlError = ["42703", "22P02"];
 
   if (sqlError.includes(err.code)) {
+    
     res.status(400).send({ msg: "Bad Request" });
   }
   next(err);

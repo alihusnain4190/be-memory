@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "jest": {
-  "setupFilesAfterEnv": ["jest-sorted"]
-},
+    "setupFilesAfterEnv": [
+      "jest-sorted"
+    ]
+  },
   "scripts": {
     "test": "jest __test__/app.spec.js ",
     "setup-db": "psql -f ./db/setup.sql",
@@ -34,7 +36,8 @@
     "faker": "^5.1.0",
     "knex": "^0.21.12",
     "nodemon": "^2.0.6",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "underscore": "^1.11.0"
   },
   "devDependencies": {
     "jest": "^26.6.3",

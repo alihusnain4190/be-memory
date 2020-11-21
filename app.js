@@ -1,10 +1,12 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const apiRouter = require("./routes/api-router");
 const {
   handleErrorSQL,
   handleCustomErrors,
   invalidRoute,
 } = require("./errors/");
+app.use(express.json());
 app.use("/api", apiRouter);
 app.all("/*", invalidRoute);
 app.use(handleErrorSQL);
