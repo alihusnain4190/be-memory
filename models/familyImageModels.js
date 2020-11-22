@@ -1,4 +1,3 @@
-const { reject } = require("underscore");
 const _ = require("underscore");
 const db = require("../db/connection");
 exports.getAllFamilyImageModel = async ({ sort_by, order = "asc" }) => {
