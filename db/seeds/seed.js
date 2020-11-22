@@ -1,5 +1,6 @@
-const { familyImage } = require("../data/index");
-console.log(familyImage);
+console.log('ali');
+const familyImage  = require("../data/index");
+
 exports.seed = function (knex) {
   return knex.migrate
     .rollback()
