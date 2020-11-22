@@ -1,5 +1,3 @@
-const { date } = require("faker");
-
 const ENV = process.env.NODE_ENV || "development";
 const devData = require("./devData/index");
 const testData = require("./testData/index");
