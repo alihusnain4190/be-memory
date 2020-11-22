@@ -1,5 +1,6 @@
 const familyImage = require("../data/index");
 const arr = familyImage.familyImage;
+
 // exports.seed = function (knex) {
 //   return knex.migrate
 //     .rollback()
