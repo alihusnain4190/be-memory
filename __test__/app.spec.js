@@ -93,7 +93,7 @@ describe("/", () => {
       });
       it("Invalid method with status 405", async () => {
         const { body } = await request(app).put("/api/f_imgs").expect(405);
-        console.log(body);
+       
         expect(body.msg).toBe("Method Not Allowed");
       });
     });
