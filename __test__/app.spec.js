@@ -222,7 +222,7 @@ describe("/", () => {
     });
     describe("PATH Family images by id", () => {
       describe("/api/f_imgs", () => {
-        it.only("Status 201 reposnse with updated object", async () => {
+        it("Status 201 reposnse with updated object", async () => {
           const input = {
             description: "alihusnain",
           };
