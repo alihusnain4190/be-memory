@@ -1,15 +1,31 @@
-console.log('ali');
-const familyImage  = require("../data/index");
+const familyImage = require("../data/index");
+console.log(familyImage);
+// exports.seed = function (knex) {
+//   return knex.migrate
+//     .rollback()
+//     .then(() => {
+//       return knex.migrate.latest();
+//     })
+//     .then(() => {
+//       return Promise.all([knex("fimage").insert(familyImage).returning("*")]);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+exports.seed = async (knex) => {
+  await knex.migrate.rollback();
+  await knex.migrate.latest();
 
-exports.seed = function (knex) {
-  return knex.migrate
-    .rollback()
-    .then(() => {
-      return knex.migrate.latest();
-    })
-    .then(() => {
-      return Promise.all([
-        knex("family-image").insert(familyImage).returning("*"),
-      ]);
-    });
+  const topicsPromise = await knex("fimage").insert(familyImage.familyImage, "*");
+  
+  // const usersPromise = knex('users').insert(userData, '*');
+  // await Promise.all([topicsPromise, usersPromise]);
+
+  // const formattedArticleData = articleData.map(convertTimestampToDate);
+  // const articleRows = await knex('articles').insert(formattedArticleData, '*');
+
+  // const articleIdLookup = createRef(articleRows, 'title', 'article_id');
+  // const formattedCommentData = formatComments(commentData, articleIdLookup);
+  // return knex('comments').insert(formattedCommentData);
 };
