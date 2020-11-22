@@ -1,5 +1,5 @@
 const familyImage = require("../data/index");
-console.log(familyImage);
+const arr = familyImage.familyImage;
 // exports.seed = function (knex) {
 //   return knex.migrate
 //     .rollback()
@@ -17,71 +17,7 @@ exports.seed = async (knex) => {
   await knex.migrate.rollback();
   await knex.migrate.latest();
 
-  const topicsPromise = await knex("family-image").insert(
-    [
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-      {
-        img_sml: "http://placeimg.com/640/480/nightlife",
-        img_full: "http://placeimg.com/640/480/nightlife",
-        description:
-          "Eos dolore laborum odio est similique autem nulla et. Quis ut magnam officia cupiditate qui et. Quaerat autem aliquam. Eaque repellendus illo velit et. Minima quo dolore ipsam consequatur aspernatur corrupti quo nihil quia.",
-      },
-    ],
-    "*"
-  );
+  const topicsPromise = await knex("family-image").insert(arr, "*");
 
   // const usersPromise = knex('users').insert(userData, '*');
   // await Promise.all([topicsPromise, usersPromise]);
