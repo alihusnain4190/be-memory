@@ -17,7 +17,6 @@ exports.handleErrorSQL = (err, req, res, next) => {
   const sqlError = ["42703", "22P02"];
 
   if (sqlError.includes(err.code)) {
-    
     res.status(400).send({ msg: "Bad Request" });
   }
   next(err);

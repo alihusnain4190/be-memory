@@ -1,3 +1,4 @@
+const { reject } = require("underscore");
 const _ = require("underscore");
 const db = require("../db/connection");
 exports.getAllFamilyImageModel = async ({ sort_by, order = "asc" }) => {
@@ -25,5 +26,19 @@ exports.insertFamilyImageController = async (body) => {
   }
   const data = await db("family-image").insert(body).returning("*");
 
+  return data[0];
+};
+exports.removeFamilyImageControllerByID = async (f_id) => {
+  const data = await db("family-image").where({ id: f_id }).del();
+  if (!data) {
+    return Promise.reject({ status: 404, msg: "Id Not Exist" });
+  }
+  return data;
+};
+exports.patchFamilyImageControllerByID = async (f_id, body) => {
+  const data = await db("family-image")
+    .update(body)
+    .where({ id: f_id })
+    .returning("*");
   return data[0];
 };

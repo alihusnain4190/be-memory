@@ -97,45 +97,6 @@ describe("/", () => {
         expect(body.msg).toBe("Method Not Allowed");
       });
     });
-    describe("/api/f_imgs:id", () => {
-      it("Status 200 with response of object by id", async () => {
-        const {
-          body: { f_img },
-        } = await request(app).get("/api/f_imgs/1").expect(200);
-
-        expect(typeof f_img).toBe("object");
-      });
-      it("Status 200 with reponse of object containing Keys", async () => {
-        const {
-          body: { f_img },
-        } = await request(app).get("/api/f_imgs/1").expect(200);
-        expect(Object.keys(f_img)).toEqual([
-          "id",
-          "img_sml",
-          "img_full",
-          "description",
-          "created_at",
-        ]);
-      });
-      it("Status 200 with response of object and check id ", async () => {
-        const {
-          body: { f_img },
-        } = await request(app).get("/api/f_imgs/1").expect(200);
-        expect(f_img.id).toBe(1);
-      });
-      it("Status 400 if pass non valid id", async () => {
-        const { body } = await request(app).get("/api/f_imgs/ali").expect(400);
-        expect(body.msg).toBe("Bad Request");
-      });
-      it("Status 404 if id is not exist ", async () => {
-        const { body } = await request(app).get("/api/f_imgs/100").expect(404);
-        expect(body.msg).toBe("Id Not Exist");
-      });
-      it("Invlaid Method with status 405", async () => {
-        const { body } = await request(app).put("/api/f_imgs/1").expect(405);
-        expect(body.msg).toBe("Method Not Allowed");
-      });
-    });
     describe("POST images", () => {
       describe("/api/f_imgs", () => {
         it("Status 201 with response of object", async () => {
@@ -179,8 +140,98 @@ describe("/", () => {
           expect(body.msg).toBe("Bad Request");
         });
         it("Status 404 when post empty object", async () => {
-          const { body } = await request(app).post("/api/f_imgs").send({});
+          const { body } = await request(app)
+            .post("/api/f_imgs")
+            .send({})
+            .expect(404);
           expect(body.msg).toBe("nothing is sending");
+        });
+        it("Status 400 if someone post family Images without description", async () => {
+          const input = {
+            img_sml: "http://placeimg.com/640/480/nightlife",
+            img_full: "http://placeimg.com/640/480/nightlife",
+            descriptions: "",
+          };
+          const { body } = await request(app)
+            .post("/api/f_imgs")
+            .send(input)
+            .expect(400);
+          expect(body.msg).toBe("Bad Request");
+        });
+      });
+    });
+    describe("/api/f_imgs:id", () => {
+      it("Status 200 with response of object by id", async () => {
+        const {
+          body: { f_img },
+        } = await request(app).get("/api/f_imgs/1").expect(200);
+
+        expect(typeof f_img).toBe("object");
+      });
+      it("Status 200 with reponse of object containing Keys", async () => {
+        const {
+          body: { f_img },
+        } = await request(app).get("/api/f_imgs/1").expect(200);
+        expect(Object.keys(f_img)).toEqual([
+          "id",
+          "img_sml",
+          "img_full",
+          "description",
+          "created_at",
+        ]);
+      });
+      it("Status 200 with response of object and check id ", async () => {
+        const {
+          body: { f_img },
+        } = await request(app).get("/api/f_imgs/1").expect(200);
+        expect(f_img.id).toBe(1);
+      });
+      it("Status 400 if pass non valid id", async () => {
+        const { body } = await request(app).get("/api/f_imgs/ali").expect(400);
+        expect(body.msg).toBe("Bad Request");
+      });
+      it("Status 404 if id is not exist ", async () => {
+        const { body } = await request(app).get("/api/f_imgs/100").expect(404);
+        expect(body.msg).toBe("Id Not Exist");
+      });
+      it("Invlaid Method with status 405", async () => {
+        const { body } = await request(app).put("/api/f_imgs/1").expect(405);
+        expect(body.msg).toBe("Method Not Allowed");
+      });
+    });
+    describe("DELETE Images BY ID", () => {
+      describe("/api/f_imgs", () => {
+        it("Status 204", async () => {
+          const { body } = await request(app)
+            .delete("/api/f_imgs/1")
+            .expect(204);
+        });
+        it("Status 404 when enter wrong id type", async () => {
+          const { body } = await request(app)
+            .delete("/api/f_imgs/1000")
+            .expect(404);
+          expect(body.msg).toBe("Id Not Exist");
+        });
+        it("Status 400 when enter wrong id type", async () => {
+          const { body } = await request(app)
+            .delete("/api/f_imgs/ali")
+            .expect(400);
+          expect(body.msg).toBe("Bad Request");
+        });
+      });
+    });
+    describe("PATH Family images by id", () => {
+      describe("/api/f_imgs", () => {
+        it.only("Status 201 reposnse with updated object", async () => {
+          const input = {
+            description: "alihusnain",
+          };
+          const {
+            body: { f_img },
+          } = await request(app).patch("/api/f_imgs/1").send(input).expect(201);
+          expect(typeof f_img).toBe("object");
+
+          expect(f_img.description).toBe("alihusnain");
         });
       });
     });

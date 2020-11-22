@@ -2,6 +2,8 @@ const {
   getAllFamilyImageModel,
   fetchFamilyImageModelByID,
   insertFamilyImageController,
+  removeFamilyImageControllerByID,
+  patchFamilyImageControllerByID,
 } = require("../models/familyImageModels");
 const { checkOrderQuery } = require("./utils");
 exports.getAllFamilyImage = async (req, res) => {
@@ -24,5 +26,19 @@ exports.addFamilyImageController = async (req, res) => {
   const body = req.body;
   // console.log(body);
   const f_img = await insertFamilyImageController(body);
+  res.status(201).send({ f_img });
+};
+
+exports.deleteFamilyImageControllerByID = async (req, res) => {
+  const { f_id } = req.params;
+  const f_img = await removeFamilyImageControllerByID(f_id);
+  console.log(f_img);
+  res.status(204).send("successfully deleted");
+};
+exports.updateFamilyImageControllerByID = async (req, res) => {
+  const { f_id } = req.params;
+  console.log(f_id);
+  const body = req.body;
+  const f_img = await patchFamilyImageControllerByID(f_id, body);
   res.status(201).send({ f_img });
 };
