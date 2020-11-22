@@ -3,6 +3,7 @@ exports.withErrorHandling = (controller) => {
     try {
       await controller(req, res);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   };
@@ -23,11 +24,11 @@ exports.handleErrorSQL = (err, req, res, next) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
+ 
   if (err.status) res.status(err.status).send({ msg: err.msg });
   else next(err);
 };
 
 exports.handle500 = (err, req, res, next) => {
-  console.log(err);
   res.status(500).send({ msg: "Internal Server Error" });
 };
