@@ -24,8 +24,9 @@ exports.getFamilyImageControllerByID = async (req, res) => {
 };
 exports.addFamilyImageController = async (req, res) => {
   const body = req.body;
-  // console.log(body);
+  
   const f_img = await insertFamilyImageController(body);
+
   res.status(201).send({ f_img });
 };
 

@@ -1,5 +1,10 @@
 const _ = require("underscore");
 const db = require("../db/connection");
+
+const fs = require("fs");
+const fileType = require("file-type");
+const multiparty = require("multiparty");
+
 exports.getAllFamilyImageModel = async ({ sort_by, order = "asc" }) => {
   const data = await db
     .select("*")
@@ -20,6 +25,8 @@ exports.fetchFamilyImageModelByID = async (f_id) => {
 };
 
 exports.insertFamilyImageController = async (body) => {
+ 
+
   if (_.isEmpty(body)) {
     return Promise.reject({ status: 404, msg: "nothing is sending" });
   }
