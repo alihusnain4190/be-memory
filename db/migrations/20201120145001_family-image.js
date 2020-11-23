@@ -6,7 +6,8 @@ exports.up = function (knex) {
     family_image.string("img_sml").notNullable();
     family_image.string("img_full").notNullable();
     family_image.text("description").notNullable();
-    family_image.timestamp('created_at').defaultTo(knex.fn.now());
+    family_image.string("location").notNullable();
+    family_image.timestamp("created_at").defaultTo(knex.fn.now());
   });
 };
 

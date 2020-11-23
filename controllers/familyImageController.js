@@ -24,7 +24,7 @@ exports.getFamilyImageControllerByID = async (req, res) => {
 };
 exports.addFamilyImageController = async (req, res) => {
   const body = req.body;
-  
+
   const f_img = await insertFamilyImageController(body);
 
   res.status(201).send({ f_img });
@@ -38,7 +38,7 @@ exports.deleteFamilyImageControllerByID = async (req, res) => {
 };
 exports.updateFamilyImageControllerByID = async (req, res) => {
   const { f_id } = req.params;
-  console.log(f_id);
+
   const body = req.body;
   const f_img = await patchFamilyImageControllerByID(f_id, body);
   res.status(201).send({ f_img });

@@ -45,3 +45,15 @@ exports.insertFamilyImageModelAWS = async (req, cb) => {
     }
   });
 };
+
+exports.removeFamilyImageModelAWS = async (image_id) => {
+  return s3.deleteObject(
+    {
+      Bucket: process.env.S3_BUCKET,
+      Key: image_id,
+    },
+    function (err, data) {
+      return data;
+    }
+  );
+};
