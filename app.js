@@ -12,6 +12,11 @@ var cors = require("cors");
 app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
+
+app.get("/products/:id", function (req, res, next) {
+  res.json({ msg: "This is CORS-enabled for all origins!" });
+});
+
 app.use("/api", apiRouter);
 app.all("/*", invalidRoute);
 
@@ -79,7 +84,7 @@ module.exports = app;
 //       const type = await fileType.fromBuffer(buffer);
 //       const fileName = `${Date.now().toString()}`;
 //       const data = await uploadFile(buffer, fileName, type);
-      // console.log(data);
+// console.log(data);
 //       return response.status(200).send(data);
 //     } catch (err) {
 //       console.log(err);
@@ -87,7 +92,6 @@ module.exports = app;
 //     }
 //   });
 // });
-
 
 module.exports = app;
 // app.listen(8080, () => {
