@@ -3,7 +3,7 @@ const {
   removeFamilyImageModelAWS,
 } = require("../models/familyAwsImageModel");
 exports.addFamilyImageControllerAWS = async (req, res) => {
-  console.log("ali");
+
   insertFamilyImageModelAWS(req, (image) => {
     res.status(201).send({ image });
   });

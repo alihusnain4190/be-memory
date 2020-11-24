@@ -1,25 +1,16 @@
 const familyImage = require("../data/index");
 const arr = familyImage.familyImage;
-
-// exports.seed = function (knex) {
-//   return knex.migrate
-//     .rollback()
-//     .then(() => {
-//       return knex.migrate.latest();
-//     })
-//     .then(() => {
-//       return Promise.all([knex("fimage").insert(familyImage).returning("*")]);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+console.log(familyImage.familyImage)
 exports.seed = async (knex) => {
   await knex.migrate.rollback();
   await knex.migrate.latest();
 
-  const topicsPromise = await knex("family-image").insert(arr, "*");
-
+  const topicsPromise = await knex("family-image").insert(familyImage.familyImage, "*");
+  try{
+    console.log(topicsPromise)
+  }catch{
+    console.log(topicsPromise);
+  }
   // const usersPromise = knex('users').insert(userData, '*');
   // await Promise.all([topicsPromise, usersPromise]);
 

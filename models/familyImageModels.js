@@ -40,8 +40,7 @@ exports.removeFamilyImageControllerByID = async (f_id) => {
   return data;
 };
 exports.patchFamilyImageControllerByID = async (f_id, body) => {
-  console.log(f_id);
-  console.log(body);
+  
   const data = await db("family-image")
     .update(body)
     .where({ id: f_id })
