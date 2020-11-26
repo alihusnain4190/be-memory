@@ -8,17 +8,8 @@ const {
   handle500,
 } = require("./errors/");
 const app = express();
-const whiteList = [
-  "https://be-memory.herokuapp.com/api/",
-];
-const corsOption = {
-  credentials: true,
-  origin: (origin, callback) => {
-    if (whiteList.includes(origin)) return callback(null, true);
-    callback(new Error("Not allowed cors"));
-  },
-};
-app.use(cors(corsOption));
+
+app.use(cors());
 app.use(express.json());
 
 app.get("/products/:id", function (req, res, next) {
