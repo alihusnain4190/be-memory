@@ -9,8 +9,7 @@ const {
 } = require("./errors/");
 const app = express();
 const whiteList = [
-  "https://be-memory.herokuapp.com/api/f_imgs",
-  "https://be-memory.herokuapp.com/api/image",
+  "https://be-memory.herokuapp.com/api/",
 ];
 const corsOption = {
   credentials: true,
