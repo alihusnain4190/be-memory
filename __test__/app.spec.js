@@ -3,7 +3,7 @@ process.env.NODE_ENV = "test";
 const app = require("../app");
 const request = require("supertest");
 const connection = require("../db/connection");
-const { as } = require("../db/connection");
+const { result } = require("underscore");
 
 beforeEach(() => {
   return connection.seed.run();
@@ -56,6 +56,7 @@ describe("/", () => {
           "img_sml",
           "img_full",
           "description",
+          "location",
           "created_at",
         ]);
       });
@@ -91,11 +92,11 @@ describe("/", () => {
           .expect(400);
         expect(body.msg).toBe("Bad Request");
       });
-      it("Invalid method with status 405", async () => {
-        const { body } = await request(app).put("/api/f_imgs").expect(405);
-       
-        expect(body.msg).toBe("Method Not Allowed");
-      });
+      // it.only("Invalid method with status 405", async () => {
+      //   const { body } = await request(app).put("/api/f_imgs").expect(405);
+      //   console.log(body);
+      //   // expect(body.msg).toBe("Method Not Allowed");
+      // });
     });
     describe("POST images", () => {
       describe("/api/f_imgs", () => {
@@ -104,6 +105,7 @@ describe("/", () => {
             img_sml: "http://placeimg.com/640/480/nightlife",
             img_full: "http://placeimg.com/640/480/nightlife",
             description: "alihusnain",
+            location: "stockport",
           };
           const {
             body: { f_img },
@@ -115,6 +117,7 @@ describe("/", () => {
             img_sml: "http://placeimg.com/640/480/nightlife",
             img_full: "http://placeimg.com/640/480/nightlife",
             description: "alihusnain",
+            location: "stockport",
           };
           const {
             body: { f_img },
@@ -124,6 +127,7 @@ describe("/", () => {
             "img_sml",
             "img_full",
             "description",
+            "location",
             "created_at",
           ]);
         });
@@ -177,6 +181,7 @@ describe("/", () => {
           "img_sml",
           "img_full",
           "description",
+          "location",
           "created_at",
         ]);
       });
@@ -233,6 +238,180 @@ describe("/", () => {
 
           expect(f_img.description).toBe("alihusnain");
         });
+      });
+    });
+  });
+  describe("/api/todo", () => {
+    describe("GET", () => {
+      it("Invalid method", async () => {
+        const invalidMethod = ["put", "patch", "delete"];
+        const methodPromise = invalidMethod.map((methods) => {
+          return request(app)
+            [methods]("/api/f_todo")
+            .expect(405)
+            .then((res) => {
+              expect(res.body.msg).toBe("Method Not Allowed");
+            });
+        });
+        return Promise.all(methodPromise);
+      });
+
+      it("STATUS 200 reponse with array of object", async () => {
+        const {
+          body: { f_todo },
+        } = await request(app).get("/api/f_todo").expect(200);
+        expect(Array.isArray(f_todo)).toBe(true);
+      });
+      it("STATUS 200 response withh arrau of object keys", async () => {
+        const {
+          body: { f_todo },
+        } = await request(app).get("/api/f_todo").expect(200);
+        expect(Object.keys(f_todo[0])).toEqual[
+          ("id", "f_task", "f_day", "f_status", "created_at")
+        ];
+      });
+      it("STATUS 200 response with array of object in asscending order", async () => {
+        const {
+          body: { f_todo },
+        } = await request(app).get("/api/f_todo").expect(200);
+        expect(f_todo).toBeSorted();
+      });
+      it("STATUS 200 response with array of object in asscending order", async () => {
+        const {
+          body: { f_todo },
+        } = await request(app).get("/api/f_todo").expect(200);
+        console.log(f_todo);
+        expect(f_todo).toBeSorted({ descending: true });
+      });
+      it("status 404 Route not found", async () => {
+        const { body } = await request(app).get("/api/ali").expect(404);
+        expect(body.msg).toBe("Route Not Found");
+      });
+    });
+    describe("POST", () => {
+      it("status 201 with response of inserted object", async () => {
+        const input = {
+          f_task: "spent time with family",
+          f_day: "tuesday",
+          f_status: "true",
+        };
+        const {
+          body: { f_todo },
+        } = await request(app).post("/api/f_todo").send(input);
+        expect(typeof f_todo).toBe("object");
+      });
+      it("status 201 with response of object with keys", async () => {
+        const input = {
+          f_task: "spent time with family",
+          f_day: "tuesday",
+          f_status: "true",
+        };
+        const {
+          body: { f_todo },
+        } = await request(app).post("/api/f_todo").send(input);
+        expect(Object.keys(f_todo)).toEqual([
+          "id",
+          "f_task",
+          "f_day",
+          "f_status",
+          "created_at",
+        ]);
+      });
+      it("status 201 with response of  object when insert just task", async () => {
+        const input = {
+          f_task: "spent time with family",
+          // f_day: "tuesday",
+          // f_status: "true",
+        };
+        const {
+          body: { f_todo },
+        } = await request(app).post("/api/f_todo").send(input).expect(201);
+        expect(f_todo.f_task).toBe("spent time with family");
+      });
+      it("Status 400 if send empty object", async () => {
+        const input = {};
+        const { body } = await request(app)
+          .post("/api/f_todo")
+          .send(input)
+          .expect(400);
+        expect(body.msg).toBe("Bad Request");
+      });
+      it("Status 400 if send empty object", async () => {
+        const input = {
+          f_day: "tuesday",
+          f_status: "true",
+        };
+        const { body } = await request(app)
+          .post("/api/f_todo")
+          .send(input)
+          .expect(400);
+        expect(body.msg).toBe("Bad Request");
+      });
+    });
+    describe("DELETE", () => {
+      it("status 204 delete Task by id", async () => {
+        const { body } = await request(app).delete("/api/f_todo/1").expect(204);
+      });
+      it("status 404 when id is not exist", async () => {
+        const { body } = await request(app)
+          .delete("/api/f_todo/100")
+          .expect(404);
+        expect(body.msg).toBe("Id Not Exist");
+      });
+      it("status 400 when id is not valid", async () => {
+        const { body } = await request(app)
+          .delete("/api/f_todo/ali")
+          .expect(400);
+        expect(body.msg).toBe("Bad Request");
+      });
+    });
+    describe("UPDATE", () => {
+      it("Status 201 reponse with updated object by id", async () => {
+        const input = {
+          f_task: "spent time with family",
+          f_day: "tasday",
+          f_status: "true",
+        };
+        const {
+          body: { result },
+        } = await request(app).patch("/api/f_todo/1").send(input).expect(201);
+        expect(typeof result).toBe("object");
+      });
+      it("Status 201 reponse with updated object by id", async () => {
+        const input = {
+          f_task: "spent time with family",
+          f_day: "tasday",
+          f_status: "false",
+        };
+        const {
+          body: { result },
+        } = await request(app).patch("/api/f_todo/1").send(input).expect(201);
+        console.log(result);
+        expect(result.f_status).toBe(false);
+      });
+      it("status 400 when user used wrong id", async () => {
+        const input = {
+          f_task: "spent time with family",
+          f_day: "tasday",
+          f_status: "false",
+        };
+        const { body } = await request(app)
+          .patch("/api/f_todo/ali")
+          .send(input)
+          .expect(400);
+        expect(body.msg).toBe("Bad Request");
+      });
+      it.only("status 404 when user used invalid ID", async () => {
+        const input = {
+          f_task: "spent time with family",
+          f_day: "tasday",
+          f_status: "false",
+        };
+        const { body } = await request(app)
+          .patch("/api/f_todo/1000")
+          .send(input)
+          .expect(404);
+        expect(body.msg).toBe("Id Not Exist");
       });
     });
   });

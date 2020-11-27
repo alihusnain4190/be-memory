@@ -14,7 +14,7 @@ exports.methodNotAllowed = (req, res) => {
   res.status(405).send({ msg: "Method Not Allowed" });
 };
 exports.handleErrorSQL = (err, req, res, next) => {
-  const sqlError = ["42703", "22P02"];
+  const sqlError = ["42703", "22P02", "23502"];
 
   if (sqlError.includes(err.code)) {
     res.status(400).send({ msg: "Bad Request" });
@@ -23,7 +23,6 @@ exports.handleErrorSQL = (err, req, res, next) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
- 
   if (err.status) res.status(err.status).send({ msg: err.msg });
   else next(err);
 };

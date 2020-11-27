@@ -33,7 +33,7 @@ exports.addFamilyImageController = async (req, res) => {
 exports.deleteFamilyImageControllerByID = async (req, res) => {
   const { f_id } = req.params;
   const f_img = await removeFamilyImageControllerByID(f_id);
-  console.log(f_img);
+
   res.status(204).send("successfully deleted");
 };
 exports.updateFamilyImageControllerByID = async (req, res) => {
