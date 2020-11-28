@@ -29,7 +29,7 @@ exports.updateTodoListModelByID = async (id, data) => {
     .where({ id })
     .update(data)
     .returning("*");
-  if (result.length===0) {
+  if (result.length === 0) {
     return Promise.reject({ status: 404, msg: "Id Not Exist" });
   }
   return result[0];

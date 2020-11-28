@@ -5,12 +5,23 @@ const fs = require("fs");
 const fileType = require("file-type");
 const multiparty = require("multiparty");
 
-exports.getAllFamilyImageModel = async ({ sort_by, order = "asc" }) => {
+exports.getAllFamilyImageModel = async ({
+  sort_by,
+  order = "asc",
+  p = 1,
+  limit = 5,
+}) => {
+  if (p < 1) p = 1;
+  let pageCount = (p - 1) * limit;
   const data = await db
     .select("*")
     .from("family-image")
+    .limit(limit)
+    .offset(pageCount)
     .orderBy(sort_by || "created_at", order);
-  return data;
+  const totalCount = await db.select("*").from("family-image");
+
+  return { data, totalCount: totalCount.length };
 };
 exports.fetchFamilyImageModelByID = async (f_id) => {
   const data = await db
@@ -40,11 +51,9 @@ exports.removeFamilyImageControllerByID = async (f_id) => {
   return data;
 };
 exports.patchFamilyImageControllerByID = async (f_id, body) => {
-  
   const data = await db("family-image")
     .update(body)
     .where({ id: f_id })
     .returning("*");
   return data[0];
 };
-

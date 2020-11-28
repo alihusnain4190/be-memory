@@ -7,8 +7,9 @@ const {
 } = require("../models/familyImageModels");
 const { checkOrderQuery } = require("./utils");
 exports.getAllFamilyImage = async (req, res) => {
-  const { order } = req.query;
-  if (!checkOrderQuery(order)) {
+  const { order, p } = req.query;
+ 
+  if (!checkOrderQuery(order, p)) {
     return Promise.reject({
       status: 400,
       msg: "Bad Request: Invalid order query",

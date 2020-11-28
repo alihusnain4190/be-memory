@@ -3,7 +3,6 @@ process.env.NODE_ENV = "test";
 const app = require("../app");
 const request = require("supertest");
 const connection = require("../db/connection");
-const { result } = require("underscore");
 
 beforeEach(() => {
   return connection.seed.run();
@@ -14,7 +13,7 @@ afterAll(() => {
 });
 describe("/", () => {
   describe("/api/f_imgs", () => {
-    describe("/api/f_imgs", () => {
+    describe.only("/api/f_imgs", () => {
       it("Invalid method", async () => {
         const invalidMethod = ["put"];
         const methodPromise = invalidMethod.map((methods) => {
@@ -37,21 +36,21 @@ describe("/", () => {
           .get("/api/f_imgs")
           .expect(200)
           .then(({ body: { f_img } }) => {
-            expect(Array.isArray(f_img)).toBe(true);
+            expect(Array.isArray(f_img.data)).toBe(true);
           });
       });
       it("status 200 with response of of array of length", async () => {
         const {
           body: { f_img },
         } = await request(app).get("/api/f_imgs").expect(200);
-
-        expect(f_img).toHaveLength(10);
+       //becase we set per page is 5
+        expect(f_img.data.length).toBe(5);
       });
       it("status 200 with respo of array keys", async () => {
         const {
           body: { f_img },
         } = await request(app).get("/api/f_imgs").expect(200);
-        expect(Object.keys(f_img[0])).toEqual([
+        expect(Object.keys(f_img.data[0])).toEqual([
           "id",
           "img_sml",
           "img_full",
@@ -80,6 +79,14 @@ describe("/", () => {
 
         expect(f_img).toBeSorted({ descending: true });
       });
+      it("status 200 reponse with array of family and get first data", async () => {
+        const {
+          body: { f_img },
+        } = await request(app).get("/api/f_imgs?p=2").expect(200);
+        console.log(f_img)
+        expect(f_img.data[0].id).toBe(6);
+      });
+
       it("GET status:400, when passed an invalid sort_by query", async () => {
         const { body } = await request(app)
           .get("/api/f_imgs?order=ali")
@@ -401,7 +408,7 @@ describe("/", () => {
           .expect(400);
         expect(body.msg).toBe("Bad Request");
       });
-      it.only("status 404 when user used invalid ID", async () => {
+      it("status 404 when user used invalid ID", async () => {
         const input = {
           f_task: "spent time with family",
           f_day: "tasday",
